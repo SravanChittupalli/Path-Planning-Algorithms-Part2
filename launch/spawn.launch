@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+  <param command="$(find xacro)/xacro '$(find bug1and2_algorithm)/urdf/bot_description.xacro'" name="robot_description"/>
+
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0.5"/>
+<!-- specially for bug1   -->
+<!-- param is used when we want to send parameteres to a code -->
+    <param name = "init_x" value="$(arg x)"/>
+    <param name = "init_y" value="$(arg y)"/>
+
+    <node name="mybot_spawn" pkg="gazebo_ros" type="spawn_model" output="screen"
+          args="-urdf -param robot_description -model bot_description -x $(arg x) -y $(arg y) -z $(arg z)" />
+
+</launch>

@@ -1,0 +1,73 @@
+<?xml version="1.0" ?>
+<robot name="m2wr" xmlns:xacro="https://www.ros.org/wiki/xacro" >   <!-- this second parameter is importent to make this file a valid xacro file -->
+
+    <xacro:macro name="link_wheel" params="name">
+    <link name="${name}">    
+            <inertial>
+            <mass value="0.2"/>
+            <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+            <inertia ixx="0.00052666666" ixy="0" ixz="0" iyy="0.052666666" iyz="0" izz="0.001"/>
+            </inertial>
+            
+            <collision name="${name}_collision">
+            <origin rpy="0 1.5707 1.5707" xyz="0 0 0" />
+            <geometry>
+                <cylinder length="0.04" radius="0.1"/>
+            </geometry>
+            </collision>
+            
+            <visual name="${name}_visual">
+            <origin rpy="0 1.5707 1.5707" xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="0.04" radius="0.1"/>
+            </geometry>      
+            </visual>
+        </link>
+    </xacro:macro>
+
+    <xacro:macro name="joint_wheel" params="name param_xyz child">
+        <joint name="${name}" type="continuous">
+            <origin rpy="0 0 0" xyz="${param_xyz}"/>        <!-- this gives orientation -->
+            <child link="${child}" />
+            <parent link="link_chassis"/>
+            <axis rpy="0 0 0" xyz="0 1 0"/>    <!-- this says rotate about y axis -->
+            <limit effort="10000" velocity="1000"/>
+            <joint_properties damping="1.0" friction="1.0" />
+        </joint>  
+        
+    </xacro:macro>
+
+    <xacro:macro name="sensor_link">
+        <link name = "sensor_link">
+            <inertial>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <mass value="3"/>
+                <inertia ixx="0.02" ixy="0" ixz="0" iyy="0.02" iyz="0" izz="0.02" />
+            </inertial>
+
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                <cylinder radius="0.05" length="0.1" />
+                </geometry>
+                <material name="Cyan"/>
+            </visual>
+        
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                <cylinder radius="0.05" length="0.1" />
+                </geometry>
+            </collision>
+        </link>
+    </xacro:macro>
+
+    <xacro:macro name="sensor_joint">
+        <joint name="sensor_joint" type="fixed">
+            <origin xyz="0.15 0 0.05" rpy="0 0 0"/>
+            <parent link="link_chassis"/>
+            <child link="sensor_link"/>
+        </joint>
+    </xacro:macro>
+
+</robot>
